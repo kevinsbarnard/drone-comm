@@ -1,0 +1,11 @@
+(define (problem drones-prob)
+    (:domain drones)
+  (:objects d1 d2 - drone
+	    c1 c2 c3 c4 c5 - location)
+  (:init (at d1 c1)
+	 (at d2 c2)
+	 (commrange c1 c2)
+	 (commrange c2 c3)
+	 (commrange c3 c4)
+	 (commrange c4 c5))
+  (:goal (and (recorded d1 c5))))
