@@ -1,0 +1,13 @@
+(define (problem test-drones-prob)
+    (:domain test-drones)
+    (:objects da db - drone
+	            c2 c3 c4 c5 - location)
+    (:init (at da home)
+        	 (at db home)
+        	 (commrange home c2)
+        	 (commrange c2 c3)
+        	 (commrange c3 c4)
+        	 (commrange c4 c5)
+        	 (commrange home c3)
+           (commrange c3 c5))
+    (:goal (and (at da c5))))

@@ -1,25 +1,26 @@
-(define (domain test-drones)
-    (:requirements :typing) 
+(define
+  (domain test-drones)
+  (:requirements :typing)
   (:types drone location)
   (:constants home - location)
-  (:predicates (at ?d - drone ?l - location)
-	       (commrange ?la - location ?lb - location)
-	       (recorded ?d - drone ?l - location))
-  (:derived (occupied ?l - location)
-	    (exists (?d - drone)
-		    (and (at ?d ?l))))
-  (:derived (linked ?d - drone)
-	    (exists (?ld - location ?d2 - drone ?ld2 - location)
-		    (or (and (at ?d ?ld)
-			     (or (commrange ?ld ?ld2) (commrange ?ld2 ?ld))
-			     (= ?ld2 home)))))
+  (:predicates
+    (at ?d - drone ?l - location)
+    (inrange ?l1 - location ?l2 - location))
+  (:derived
+    (linked ?l - location)
+    (exists
+      (?d - drone ?ld - location)
+	    (or
+        (or (= ?l home) (inrange ?l home) (inrange home ?l))
+        (and
+          (at ?d ?ld)
+          (or (inrange ?l ?ld) (inrange ?ld ?l))
+          (linked ?ld)))))
   (:action move
-	   :parameters (?d - drone ?la - location ?lb - location)
-	   :precondition (and (at ?d ?la)
-			      (not (occupied ?lb)))
-	   :effect (and (not (at ?d ?la))
-			(at ?d ?lb)))
-  (:action record
-	   :parameters (?d - drone ?l - location)
-	   :precondition (and (at ?d ?l))
-	   :effect (and (recorded ?d ?l))))
+    :parameters (?d - drone ?li - location ?lf - location)
+    :precondition (and
+      (at ?d ?li)
+      (linked ?lf))
+    :effect (and
+      (not (at ?d ?li))
+		  (at ?d ?lf))))
